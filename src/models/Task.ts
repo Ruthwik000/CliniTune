@@ -1,11 +1,11 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
 export interface ITask extends Document {
   _id: string;
   title: string;
   description: string;
-  patientId: string;
-  clinicianId: string;
+  patientId: Types.ObjectId | string;
+  clinicianId: Types.ObjectId | string;
   completed: boolean;
   dueDate: Date;
   createdAt: Date;

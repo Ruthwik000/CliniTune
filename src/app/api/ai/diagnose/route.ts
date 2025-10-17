@@ -54,7 +54,7 @@ export async function GET() {
     }
 
     // Test 2: Try Gemini Flash 2.0 first, then fallback to available models
-    let testModel = availableModels.find(m => m.name.includes('gemini-2.0-flash')) || availableModels[0];
+    let testModel = availableModels.find((m: any) => m.name.includes('gemini-2.0-flash')) || availableModels[0];
     console.log('Testing content generation with Flash 2.0:', testModel.name);
     
     const generateResponse = await fetch(`https://generativelanguage.googleapis.com/v1/${testModel.name}:generateContent?key=${apiKey}`, {
@@ -73,7 +73,7 @@ export async function GET() {
         success: false,
         error: `Content generation failed: ${generateResponse.status}`,
         details: errorText,
-        availableModels: availableModels.map(m => m.name),
+        availableModels: availableModels.map((m: any) => m.name),
         steps: [
           'API key is valid but content generation failed',
           'Try using a different model',
@@ -89,7 +89,7 @@ export async function GET() {
       success: true,
       message: 'Gemini API is working perfectly!',
       testResponse: responseText,
-      availableModels: availableModels.map(m => ({
+      availableModels: availableModels.map((m: any) => ({
         name: m.name,
         displayName: m.displayName
       })),

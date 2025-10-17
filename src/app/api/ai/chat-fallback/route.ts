@@ -94,7 +94,6 @@ export async function POST(request: NextRequest) {
       aiResponse = generalResponses[Math.floor(Math.random() * generalResponses.length)];
     }
     
-    const aiResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
     console.log('Generated fallback response:', aiResponse);
 
     // Add AI response

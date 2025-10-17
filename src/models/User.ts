@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
 export interface IUser extends Document {
   _id: string;
@@ -6,8 +6,8 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: 'clinician' | 'patient';
-  assignedPatients?: string[];
-  assignedClinician?: string;
+  assignedPatients?: (Types.ObjectId | string)[];
+  assignedClinician?: Types.ObjectId | string;
   specialization?: string;
   licenseNumber?: string;
   preferences?: {

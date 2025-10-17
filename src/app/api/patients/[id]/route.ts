@@ -6,7 +6,7 @@ import User from '@/models/User';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -17,8 +17,10 @@ export async function GET(
 
     await dbConnect();
 
+    const { id } = await params;
+    
     // Get the patient by ID
-    const patient = await User.findById(params.id);
+    const patient = await User.findById(id);
     
     if (!patient) {
       return NextResponse.json(
@@ -30,7 +32,7 @@ export async function GET(
     // Verify that this patient is assigned to the current clinician
     const clinician = await User.findById(session.user.id);
     const isAssigned = clinician?.assignedPatients?.some(
-      (patientId: any) => patientId.toString() === params.id
+      (patientId: any) => patientId.toString() === id
     );
 
     if (!isAssigned) {

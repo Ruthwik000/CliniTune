@@ -11,14 +11,25 @@ export async function GET() {
       });
     }
 
-    const { GoogleGenerativeAI } = await import('@google/generative-ai');
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const apiKey = process.env.GEMINI_API_KEY;
     
     console.log('Fetching models from Gemini API...');
-    const models = await genAI.listModels();
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      return NextResponse.json({
+        success: false,
+        error: `Failed to fetch models: ${response.status}`,
+        details: errorText
+      });
+    }
+    
+    const data = await response.json();
+    const models = data.models || [];
     console.log(`Found ${models.length} models`);
     
-    const modelList = models.map(model => ({
+    const modelList = models.map((model: any) => ({
       name: model.name,
       displayName: model.displayName,
       description: model.description,
@@ -27,7 +38,7 @@ export async function GET() {
       outputTokenLimit: model.outputTokenLimit
     }));
     
-    console.log('Available models:', modelList.map(m => m.name));
+    console.log('Available models:', modelList.map((m: any) => m.name));
     
     return NextResponse.json({
       success: true,

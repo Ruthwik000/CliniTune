@@ -45,11 +45,7 @@ export async function GET() {
       try {
         console.log(`Testing model: ${modelName}`);
         const model = genAI.getGenerativeModel({ 
-          model: modelName,
-          generationConfig: {
-            maxOutputTokens: 50,
-            temperature: 0.7,
-          }
+          model: modelName
         });
         
         const result = await model.generateContent('Hello, respond with just "AI is working"');

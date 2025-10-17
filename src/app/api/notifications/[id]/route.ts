@@ -6,7 +6,7 @@ import Notification from '@/models/Notification';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -16,12 +16,13 @@ export async function PATCH(
     }
 
     const { read } = await request.json();
+    const { id } = await params;
     
     await dbConnect();
 
     const notification = await Notification.findOneAndUpdate(
       { 
-        _id: params.id,
+        _id: id,
         userId: session.user.id 
       },
       { read },
